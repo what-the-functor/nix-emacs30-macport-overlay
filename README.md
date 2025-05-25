@@ -8,7 +8,7 @@ Add to your flake inputs.
 ```nix
 inputs = {
   ...
-  emacs30-macport-overlay.url = "github:what-the-functor/nix-emacs30-macport";
+  emacs30-macport-overlay.url = "github:what-the-functor/nix-emacs30-macport-overlay";
 }
 ```
 

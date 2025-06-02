@@ -2,6 +2,8 @@
 
 This flake provides an overlay for [jdtsmith/emacs-mac](https://github.com/jdtsmith/emacs-mac "Experimental emacs-macport v30.1 fork"), based on [nixpkgs PR 393512](https://github.com/NixOS/nixpkgs/pull/393512 "Upstream PR to nixpkgs")
 
+NOTE: This branch enables native compilation by patching ld64.  Anything that depends on ld64 will be rebuilt.
+
 ## Usage
 
 Add to your flake inputs.

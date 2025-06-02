@@ -13,6 +13,8 @@
       emacs30-macport-pkgs,
     }:
     let
+      dedupe-rpath = ./dedupe-rpath.patch;
+      
       pkgsFor =
         system:
         import nixpkgs {
@@ -30,10 +32,16 @@
         default =
           final: prev:
           let
-            pkgs = import emacs30-macport-pkgs { system = prev.system; };
+            pkgs = (import emacs30-macport-pkgs { system = prev.system; }).extend (
+              final: prev: {
+                ld64 = prev.ld64.overrideAttrs (o: {
+                  patches = o.patches ++ [ dedupe-rpath ];
+                });
+              }
+            );
           in
           {
-            emacs30-macport = pkgs.emacs30-macport.override { withNativeCompilation = false; };
+            emacs30-macport = pkgs.emacs30-macport;
           };
       };
 

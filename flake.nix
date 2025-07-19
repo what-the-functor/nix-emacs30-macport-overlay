@@ -14,7 +14,7 @@
     }:
     let
       dedupe-rpath = ./dedupe-rpath.patch;
-      
+
       pkgsFor =
         system:
         import nixpkgs {
@@ -39,9 +39,29 @@
                 });
               }
             );
+
+            makeEmacs = import "${pkgs.path}/pkgs/applications/editors/emacs/make-emacs.nix";
+
+            emacs30-macport = makeEmacs {
+              pname = "emacs-mac";
+              version = "30.1.90";
+              variant = "macport";
+              src = pkgs.fetchFromGitHub {
+                owner = "jdtsmith";
+                repo = "emacs-mac";
+                rev = "e5514461eb3591778bf63532d0d1cac598c0259d";
+                hash = "sha256-AuhOwMQmtS/MmwDFHidfYFKuaqYomEh2Z+Xemdy/zVU=";
+              };
+              patches = _: [ "${pkgs.path}/pkgs/applications/editors/emacs/macport-stdbool.patch" ];
+              meta = {
+                homepage = "https://github.com/jdtsmith/emacs-mac";
+                platforms = pkgs.lib.platforms.darwin;
+              };
+            };
+
           in
           {
-            emacs30-macport = pkgs.emacs30-macport;
+            emacs30-macport = pkgs.callPackage emacs30-macport { inherit (pkgs.darwin) sigtool; };
           };
       };
 
